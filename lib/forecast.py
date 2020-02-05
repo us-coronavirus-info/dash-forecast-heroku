@@ -7,10 +7,9 @@ Created on Tue Feb  4 14:28:20 2020
 
 import requests
 import json
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
-from model import expfit, ratetrend
+from .model import expfit, ratetrend
 
 
 ## Get Data

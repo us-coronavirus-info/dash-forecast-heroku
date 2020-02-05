@@ -30,7 +30,7 @@ def NamedSlider(name, **kwargs):
         className = "slider",
         style={"padding": "5px"},
         children=[
-            html.P(f"{name}:"),
+            html.P(name),
             html.Div(style={"margin-left": "6px", "margin-right": "6px"}, children=dcc.Slider(**kwargs)),
         ],
     )
@@ -40,7 +40,7 @@ def NamedDropdown(name, **kwargs):
     return html.Div(
         style={"margin": "10px 0px"},
         children=[
-            html.P(children=f"{name}:", style={"margin-left": "3px"}),
+            html.P(children=name, style={"margin-left": "3px"}),
             dcc.Dropdown(**kwargs),
         ],
     )
@@ -49,7 +49,7 @@ def NamedDropdown(name, **kwargs):
 def NamedRadioItems(name, **kwargs):
     return html.Div(
         style={"padding": "20px 10px 25px 4px"},
-        children=[html.P(children=f"{name}:"), dcc.RadioItems(**kwargs)],
+        children=[html.P(children=name), dcc.RadioItems(**kwargs)],
     )
 
 

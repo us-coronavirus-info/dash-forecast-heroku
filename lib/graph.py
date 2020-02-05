@@ -42,7 +42,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xhist,
         y=yhist,
         mode="markers",
-        name=f"历史确诊数据",
+        name="历史确诊数据",
         line=None,
         marker=dict(size=np.sqrt(yhist)/sizefactor, color='#E55A4D',
                 line=dict(
@@ -55,7 +55,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xvali,
         y=yvali,
         mode="markers",
-        name=f"验证确诊数据",
+        name="验证确诊数据",
         marker=dict(
                 size=np.sqrt(yvali)/sizefactor, 
                 color='#CB2A2E',
@@ -72,7 +72,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xpredb,
         y=ypred0[-predDays-1:],
         mode="lines",
-        name=f"多项式预测下限区间",
+        name="多项式预测下限区间",
         line = dict(dash='dash',color='GoldenRod'),
         showlegend=False
     )     
@@ -82,7 +82,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         y=ypred[-predDays-1:],
         mode="none",
         fill='tonexty',
-        name=f"多项式预测下限区间",
+        name="多项式预测下限区间",
         fillcolor="rgba(218,165,32,0.4)",
     )    
     
@@ -91,7 +91,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xpred,
         y=ypred,
         mode="lines",
-        name=f"指数渐近预测",
+        name="指数渐近预测",
         line = dict(dash='dash',color='DeepSkyBlue'),
     ) 
     
@@ -99,7 +99,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xpredb,
         y=ypredl,
         mode="lines",
-        name=f"指数预测模型68%置信区间",
+        name="指数预测模型68%置信区间",
 #        line_color='indigo',
         line = dict(color='DeepSkyBlue',width=0),
         showlegend=False
@@ -110,7 +110,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         y=ypredu,
         mode="none",
         fill='tonexty',
-        name=f"指数预测模型68%置信空间",
+        name="指数预测模型68%置信空间",
         fillcolor="rgba(0,191,255,0.4)",
         line = dict(color='DeepSkyBlue'),
     )    
