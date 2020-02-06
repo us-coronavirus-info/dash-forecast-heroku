@@ -322,7 +322,7 @@ display: none !important;
         align-items: stretch;
     }
 
-    #graph-sklearn-svm {
+    #graph-prediction {
         height: 100%;
     }
 
@@ -338,13 +338,13 @@ display: none !important;
 
 @media (min-width: 1301px) {
     #div-graphs {
-        height: 83rem;
+        //height: 70rem;
     }
 }
 
 @media (max-width: 1300px) {
     #div-graphs {
-        height: 70rem;
+        //height: 55rem;
     }
 
     .gtitle {
@@ -403,7 +403,7 @@ display: none !important;
         width: 100%;
     }
 
-    #graph-sklearn-svm, #graph-line-roc-curve, #graph-pie-confusion-matrix {
+    #graph-prediction, #graph-line-roc-curve, #graph-pie-confusion-matrix {
         height: 100%;
         width: 100%;
     }
