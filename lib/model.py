@@ -122,7 +122,7 @@ def ratetrend(hist,c, name = None, fitdays = None, preddays =5, dispconf = True)
         est2[i] += lastval2 + np.exp(newdifffunc(i,*popt))
         lastval2 = est2[i]
         
-    return [[*est[:-1],*pred], [*est2[:-1],*pred2], pred2u, pred2l]
+    return [[*est,*pred[1:]], [*est2,*pred2[1:]], pred2u, pred2l]
     # if dispconf:
     #     plt.fill_between([totdays-1,*predx], pred2u,pred2l, alpha = 0.3, facecolor='blue')
     
