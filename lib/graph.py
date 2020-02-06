@@ -22,13 +22,16 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
     # Prepare Data
     xhist = dates[:totDays-valDays]
     yhist = np.array(data['hist'][:totDays-valDays])
+    yfit = data['pred'][totDays-valDays][1][:totDays-valDays]
     
     xvali = dates[totDays-valDays:totDays]
     yvali = np.array(data['hist'][totDays-valDays:totDays])
     
-    xpred = dates[:totDays-valDays+predDays]
-    ypred = data['pred'][totDays-valDays][1][:totDays-valDays+predDays]
-    ypred0 = data['pred'][totDays-valDays][0][:totDays-valDays+predDays]
+    
+    
+    xpred = dates[totDays-valDays-1:totDays-valDays+predDays]
+    ypred = [yhist[-1], *data['pred'][totDays-valDays][1][totDays-valDays:totDays-valDays+predDays]]
+    ypred0 = [yhist[-1], *data['pred'][totDays-valDays][0][totDays-valDays:totDays-valDays+predDays]]
     
     xpredb = dates[totDays-valDays-1:totDays-valDays+predDays]
     ypredu = data['pred'][totDays-valDays][2][:predDays+1]
@@ -71,7 +74,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
     # Polinimal Lower Bound
     tracepred0 = go.Scatter(
         x=xpredb,
-        y=ypred0[-predDays-1:],
+        y=ypred0,
         mode="lines",
         name="多项式预测下限区间",
         line = dict(dash='dash',color='GoldenRod'),
@@ -88,8 +91,16 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
     )    
     
     
+    tracefit = go.Scatter(
+        x=xhist,
+        y=yfit,
+        mode="lines",
+        name="指数渐近拟合",
+        line = dict(dash='dash',color='Violet'),
+    ) 
+    
     tracepred = go.Scatter(
-        x=xpred,
+        x=xpredb,
         y=ypred,
         mode="lines",
         name="指数渐近预测",
@@ -100,7 +111,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         x=xpredb,
         y=ypredl,
         mode="lines",
-        name="指数预测模型68%置信区间",
+        name="指数渐近预测",
 #        line_color='indigo',
         line = dict(color='DeepSkyBlue',width=0),
         showlegend=False
@@ -127,7 +138,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         font={"color": "#a5b1cd"},
     )
 
-    data = [tracehist,tracevali,tracepred0, tracepred0shade, tracepred,tracepredl,tracepredu]
+    data = [tracehist,tracevali,tracepred0, tracepred0shade, tracefit, tracepred,tracepredl,tracepredu]
     figure = go.Figure(data=data, layout=layout)
 
     return figure
