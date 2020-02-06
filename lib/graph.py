@@ -21,10 +21,10 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
 
     # Prepare Data
     xhist = dates[:totDays-valDays]
-    yhist = data['hist'][:totDays-valDays]
+    yhist = np.array(data['hist'][:totDays-valDays])
     
     xvali = dates[totDays-valDays:totDays]
-    yvali = data['hist'][totDays-valDays:totDays]
+    yvali = np.array(data['hist'][totDays-valDays:totDays])
     
     xpred = dates[:totDays-valDays+predDays]
     ypred = data['pred'][totDays-valDays][1][:totDays-valDays+predDays]
@@ -37,14 +37,15 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
 #    ypred0 = data['pred'][totDays-valDays][3][:predDays+1]
     
     # Plot 
-    sizefactor = 4 if name in ['湖北省','全国','湖北'] else 1
+    # sizefactor = 1 if name in ['湖北省','全国','湖北'] else 1
+    sizefactor = 3
     tracehist = go.Scatter(
         x=xhist,
         y=yhist,
         mode="markers",
         name="历史确诊数据",
         line=None,
-        marker=dict(size=np.sqrt(yhist)/sizefactor, color='#E55A4D',
+        marker=dict(size=np.log10(yhist+1)*sizefactor, color='#E55A4D',
                 line=dict(
                     color='#000',
                     width=0
@@ -57,7 +58,7 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
         mode="markers",
         name="验证确诊数据",
         marker=dict(
-                size=np.sqrt(yvali)/sizefactor, 
+                size=np.log10(yvali+1)*sizefactor, 
                 color='#CB2A2E',
                 line=dict(
                     color='#000',
