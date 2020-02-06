@@ -34,8 +34,8 @@ lastDay = DT.date(*lastDay)
 dates = [(lastDay - DT.timedelta(days = (totDays-i-1))).strftime(r'%m/%d').lstrip("0")  for i in range(totDays + 5)]
 
 # Default 
-valDays = 2
-predDays = 4
+valDays = 1
+predDays = 3
 prediction_figure = generateGraph(severeProv[0], dates, provRes[severeProv[0]],totDays,valDays,predDays)
 
 # HTML
