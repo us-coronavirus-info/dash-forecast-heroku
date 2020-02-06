@@ -116,8 +116,8 @@ def generateGraph(name, dates, data, totDays, valDays=0, predDays=3):
     )    
 
     layout = go.Layout(
-        xaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False),
-        yaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False),
+        xaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True),
+        yaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True),
         hovermode="closest",
         legend=dict(x=0.05, y=0.95, orientation="v"),
         margin=dict(l=0, r=0, t=0, b=0),

@@ -16,5 +16,5 @@ for col in raw.columns[1:]:
     data['hist'][col] = pd.to_numeric(raw[col][2:-1]).tolist()
 
 
-with open('hist.json', 'w') as f:
+with open('../hist.json', 'w') as f:
     json.dump(data, f)    
