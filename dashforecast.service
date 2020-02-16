@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn instance to serve dash-forecast
+Requires=dashforecast.socket
+After=network.target
+
+[Service]
+User=qmshao
+Group=www-data
+WorkingDirectory=/home/qmshao/Python/dash-forecast
+Environment="PATH=/home/qmshao/Python/dash-forecast/dash/bin/"
+ExecStart=/home/qmshao/Python/dash-forecast/dash/bin/gunicorn --workers 2 --bind unix:dash-forecast.sock -m 007 app:server
+
+[Install]
+WantedBy=multi-user.target
