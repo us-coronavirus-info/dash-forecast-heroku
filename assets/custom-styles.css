@@ -61,6 +61,10 @@ display: none !important;
         align-items: center;
     }
 
+    .container.scalable {
+        padding: 0;
+    }
+
     .banner h2 {
         font-size: 4rem;
     }
@@ -75,7 +79,9 @@ display: none !important;
     .banner .container.scalable {
         padding: 0
     }
-
+    .container.scalable {
+        padding: 0;
+    }
     .banner Img {
         height: 4rem;
         margin-bottom: 2rem;
@@ -366,7 +372,7 @@ display: none !important;
     }
 
     #svm-graph-container {
-        width: 80vw;
+        width: 99vw;
         height: 100vw;
         display: flex;
         flex-direction: column;
@@ -376,8 +382,8 @@ display: none !important;
     }
 
     #svm-graph-container .graph-wrapper {
-        width: 80vw;
-        height: 80vw;
+        width: 90%;
+        height: 90%;
     }
 
     #graphs-container {

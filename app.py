@@ -151,6 +151,15 @@ app.layout = html.Div(
                                         ),
                                     ],
                                 ),
+                                    
+                                drc.Card(
+                                    id="second-card",
+                                    children=[
+                                        html.P('R0 is estimated from simplified SEIR model, only reflecting trend. \
+                                                    Daily % diff is the real confirmed number compared to forecast, \
+                                                        postive means worse than forecset, and postive means better than forecast.')
+                                    ]
+                                ),
                             ],
                         ),
                         html.Div(

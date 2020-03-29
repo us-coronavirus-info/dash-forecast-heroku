@@ -36,7 +36,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     yR0 = data['R0hist']
     
     xErr = dates[-predDays-window+1:-predDays]
-    yErr = np.array(data['err']) * data['hist'][-1] / 3
+    yErr = np.array(data['err']) * data['hist'][-1] / 1.5
     textErr = list(map(lambda e: '{0:+0.1f}%'.format(e*100), data['err']))
     baseErr = data['hist'][-window+1:]
     colorErr = list(map(lambda e: 'crimson' if e>0 else px.colors.qualitative.Dark2[0], yErr))
@@ -50,7 +50,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="markers",
         name="Confirmed Cases",
         line=None,
-        marker=dict(size=np.log10(yhist+1)*sizefactor, color=px.colors.qualitative.Set1[5], #'#E55A4D',
+        marker=dict(size=5, color=px.colors.qualitative.Set1[5], #'#E55A4D', np.log10(yhist+1)*sizefactor
                 line=dict(
                     color='#000',
                     width=0
@@ -97,7 +97,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x=xfit,
         y=yfit,
         mode="lines",
-        name="Model Fitting",
+        name="Forecasting",
         line = dict(dash='dash',color='Violet'),
     ) 
     
@@ -105,7 +105,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x=xpred,
         y=ypred,
         mode="lines",
-        name="Model Prediction",
+        name="Prediction",
         line = dict(dash='dash',color='DeepSkyBlue'),
     ) 
     
@@ -113,7 +113,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x = xR0,
         y = yR0,
         mode="lines",
-        name="Estimated R0 Trend",
+        name="R0 Trend",
         line = dict(color='White', shape='spline',smoothing= 1),
         yaxis="y2"
     )
@@ -122,18 +122,18 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x=[dates[-predDays-valDays-1], dates[-predDays-valDays-1]],
         y=[0,10],
         mode="lines",
-        name="Model Fitting",
+        name="Divider",
         line = dict(dash='dash',color='grey'),
         yaxis="y2", 
         showlegend=False
     ) 
 
     traceErr = go.Bar(x=xErr, y=yErr,
-                base=baseErr,
-                text=textErr,
-                texttemplate='%{text}', textposition='outside',
-                marker_color=colorErr,
-                name='Daily Increase Compared to Forecast')
+        base=baseErr,
+        text=textErr,
+        texttemplate='%{text}', textposition='outside',
+        marker_color=colorErr,
+        name=r'Daily % diff')
 
     layout = go.Layout(
         xaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True, 
@@ -141,9 +141,9 @@ def generateGraph(name, dates, data, totDays, valDays=0):
             # categoryorder="array",
             # categoryarray = dates,
         ),
-        yaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True, title="Confirmed Cases"),
+        yaxis=dict(ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True, title="Confirmed Cases"),
         yaxis2=dict(
-            ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True,
+            ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True,
             title="R0",
             overlaying="y",
             side="right",
