@@ -4,6 +4,7 @@ import requests
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from scipy.optimize import minimize
+from scipy.stats.distributions import  t
 
 
 window = 7 
@@ -75,8 +76,8 @@ def fitModel(hist):
                 sse += (y[i]-sol[i][2])**2
             return sse       
     
-        res = minimize(SEIR_modelode, 2, method='nelder-mead',
-                       options={'xatol': 1e-8, 'disp': True})
+        res = minimize(SEIR_modelode, 2, method='BFGS', #'nelder-mead',
+                       tol= 1e-8, options={'disp': False})
         R0 = res.x
         if R0[0] < 0:
             R0 = np.array([0])
@@ -87,6 +88,17 @@ def fitModel(hist):
         yy = [a[2] for a in sol]
         yy[window:] += y[-1] - yy[window-1]
 
+
+        
+        # alpha = 0.05 # 95% confidence interval = 100*(1-alpha)
+        # dof = window- 1 # number of degrees of freedom
+        # # student-t value for the dof and confidence level
+        # tval = t.ppf(1.0-alpha/2., dof) 
+        # sigma = res.hess_inv[0][0] ** 0.5
+        # fac = sigma*tval 
+        # print(fac, tval)
+
+
         # y0 = y[-1]
         # dy0, ddy0 = expfit(x, np.log(y), W = -1)
         # x = np.arange(predDays+1)
@@ -94,6 +106,14 @@ def fitModel(hist):
         # yy = [*yy, *[a[2] for a in sol][1:]]
         R0hist.append(R0[0])
         pred.append(yy)
+
+        # if i==days - window:
+        #     xb = np.arange(window)
+
+        #     coef = np.polyfit(range(3), R0hist[-3:], 1)
+            
+        #     solb = odeint(ode, sol[1], xb, args=(R0+coef[0],))
+        #     pred[-1][window] = solb[-1][2]
 
     return R0hist, pred
         

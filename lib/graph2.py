@@ -2,7 +2,7 @@
 import colorlover as cl
 import plotly.graph_objs as go
 import numpy as np
-
+import plotly.express as px
 
 # Colorscale
 #    bright_cscale = [[0, "#ff3700"], [1, "#0b8bff"]]
@@ -35,6 +35,12 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     xR0 = dates[-window-predDays:-predDays]
     yR0 = data['R0hist']
     
+    xErr = dates[-predDays-window+1:-predDays]
+    yErr = np.array(data['err']) * data['hist'][-1] / 3
+    textErr = list(map(lambda e: f'{e*100:+0.1f}%', data['err']))
+    baseErr = data['hist'][-window+1:]
+    colorErr = list(map(lambda e: 'crimson' if e>0 else px.colors.qualitative.Dark2[0], yErr))
+
     # Plot 
     # sizefactor = 1 if name in ['湖北省','全国','湖北'] else 1
     sizefactor = 3
@@ -44,7 +50,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="markers",
         name="Confirmed Cases",
         line=None,
-        marker=dict(size=np.log10(yhist+1)*sizefactor, color='#E55A4D',
+        marker=dict(size=np.log10(yhist+1)*sizefactor, color=px.colors.qualitative.Set1[5], #'#E55A4D',
                 line=dict(
                     color='#000',
                     width=0
@@ -122,6 +128,13 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         showlegend=False
     ) 
 
+    traceErr = go.Bar(x=xErr, y=yErr,
+                base=baseErr,
+                text=textErr,
+                texttemplate='%{text}', textposition='outside',
+                marker_color=colorErr,
+                name='Daily Increase Compared to Forecast')
+
     layout = go.Layout(
         xaxis=dict(ticks="", showticklabels=True, showgrid=False, zeroline=False, fixedrange=True, 
             # type='category',
@@ -137,6 +150,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
             range=[0,10],
             # position=0.15
         ),
+        barmode='relative',
         hovermode="closest",
         legend=dict(x=0.05, y=0.95, orientation="v"),
         margin=dict(l=0, r=0, t=0, b=0),
@@ -145,7 +159,9 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         font={"color": "#a5b1cd"},
     )
 
-    data = [tracehist,tracefit, tracepred, traceR0, tracedivider]
+
+
+    data = [tracehist,tracefit, tracepred, traceR0, tracedivider, traceErr]
     figure = go.Figure(data=data, layout=layout)
 
     return figure

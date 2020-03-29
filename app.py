@@ -62,15 +62,15 @@ app.layout = html.Div(
                                         "color": "inherit",
                                     },
                                 ),
-                                html.A(
-                                    "by QMSHAO",
-                                    style={
-                                        "text-decoration": "none",
-                                        "color": "inherit",
-                                        "padding": "10px",
-                                        "font-size": "50%",
-                                    },
-                                )
+                                # html.A(
+                                #     "by QMSHAO",
+                                #     style={
+                                #         "text-decoration": "none",
+                                #         "color": "inherit",
+                                #         "padding": "10px",
+                                #         "font-size": "50%",
+                                #     },
+                                # )
                             ],
                         ),
                     ],
@@ -93,13 +93,29 @@ app.layout = html.Div(
                                     id="first-card",
                                     children=[
                                         drc.NamedDropdown(
-                                            name="States over 500 Cases",
+                                            name="States over 1000 Cases",
                                             id="dropdown-select-dataset",
                                             options = severeProvLabel,
                                             clearable=False,
                                             searchable=False,
                                             value=severeProvLabel[0]['label' ],
                                         ),
+                                        html.P("Forecast Today"),
+                                        html.Div(
+                                            id = 'LEDcontainer',
+                                            children = daq.LEDDisplay(
+                                                id="forecast-number",
+                                                value=int(stateRes[severeStates[0]]['forecast']),
+                                                color="#92e0d3",
+                                                backgroundColor="#1e2130",
+                                                size=25,
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                                drc.Card(
+                                    id="second-card",
+                                    children=[
                                         drc.NamedSlider(
                                             name="Date to Start Forecasting",
                                             id="slider-training-date",
@@ -110,19 +126,6 @@ app.layout = html.Div(
                                                 for i in range(-dispDays+1,1)
                                             },
                                             value=-valDays,
-                                        ),
-                                    ],
-                                ),
-                                drc.Card(
-                                    id="second-card",
-                                    children=[
-                                        html.P("Estimated Increase Today"),
-                                        daq.LEDDisplay(
-                                            id="forecast-number",
-                                            value=int(stateRes[severeStates[0]]['forecast']),
-                                            color="#92e0d3",
-                                            backgroundColor="#1e2130",
-                                            size=30,
                                         ),
                                     ],
                                 )

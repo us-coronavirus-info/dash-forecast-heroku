@@ -338,7 +338,7 @@ display: none !important;
 
 @media (min-width: 1301px) {
     #div-graphs {
-        //height: 70rem;
+        height: calc(100vh - 30rem);
     }
 }
 
