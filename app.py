@@ -138,11 +138,6 @@ app.layout = html.Div(
                                                 size=25,
                                             ),
                                         ),
-                                    ],
-                                ),
-                                drc.Card(
-                                    id="second-card",
-                                    children=[
                                         drc.NamedSlider(
                                             name="Date to Start Forecasting",
                                             id="slider-training-date",
@@ -155,7 +150,7 @@ app.layout = html.Div(
                                             value=-valDays,
                                         ),
                                     ],
-                                )
+                                ),
                             ],
                         ),
                         html.Div(
