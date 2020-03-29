@@ -1,0 +1,121 @@
+import numpy as np
+import math
+import requests
+from scipy.optimize import curve_fit
+from scipy.integrate import odeint
+from scipy.optimize import minimize
+from scipy.stats.distributions import  t
+
+
+window = 7 
+dispDays = 7
+predDays = 3
+
+def expfunc(x, a, b, c):
+    return a*(1 - np.exp(-b*(x-c)))
+
+def jac(x, a, b, c):
+    return np.array([1 - np.exp(-b*(x-c)), a*(x-c)*np.exp(-b*(x-c)), -a*b*np.exp(-b*(x-c))]).transpose()
+
+# fit a curve to estimate dy and ddy
+# W = 1, weight the first most important, W = 2, the last most important
+def expfit(x, y, W = 1):
+    try:
+        x = x - len(x) * (W < 0)
+        sigmafactor = 0.5 * W
+        sigma = [float(s+1)**sigmafactor for s in range(window)]
+        # sigma[0] = sigma[-1]/2
+        popt, pcov = curve_fit(expfunc, x, y, p0=(10000, 0.2, 0), jac=jac, sigma = sigma)
+
+        a, b, c = popt
+        y0 = math.exp(a*(1-math.exp(b*c)))
+        dlogy0 =  a*b*math.exp(b*c)
+        dy0 = y0 * dlogy0
+        ddy0 = y0 * dlogy0**2 + y0 * dlogy0 * (-b)
+    except RuntimeError:
+        # In case first order system response doesn't fit, use linar fit
+        coef = np.polyfit(x, y, 1)
+        a, b = coef
+        y0 = math.exp(b)
+        dy0 = a * y0
+        ddy0 = a * dy0
+    return dy0, ddy0
+
+
+def fitModel(hist):
+
+    hist0 = np.array(hist[-dispDays-window+1:])
+    hist0 = np.log(hist0[hist0>0])
+    days = len(hist0)
+   
+    R0hist = []
+    pred = []
+
+    # fit data within window size
+    for i in range(days - window + 1): 
+        x = np.arange(window)
+        y = hist0[i:i+window]
+
+        y0 = math.exp(y[0])
+        dy0, ddy0 = expfit(x, y, W = 1)
+        
+        # SEIR model parameter assumpitons
+        DE = 6.1
+        DI = 1.4
+        
+        y = np.exp(y)
+        
+        def ode(yy, t, R0):
+            E,I,C = yy
+            return [R0/DI*I-E/DE, E/DE-I/DI, E/DE]
+    
+        def SEIR_modelode(R0):
+            sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
+            sse = 0
+            for i in range(len(x)):
+                sse += (y[i]-sol[i][2])**2
+            return sse       
+    
+        res = minimize(SEIR_modelode, 2, method='BFGS', #'nelder-mead',
+                       tol= 1e-8, options={'disp': False})
+        R0 = res.x
+        if R0[0] < 0:
+            R0 = np.array([0])
+
+        # Model Validation
+        x = np.arange(window + predDays)
+        sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
+        yy = [a[2] for a in sol]
+        yy[window:] += y[-1] - yy[window-1]
+
+
+        
+        # alpha = 0.05 # 95% confidence interval = 100*(1-alpha)
+        # dof = window- 1 # number of degrees of freedom
+        # # student-t value for the dof and confidence level
+        # tval = t.ppf(1.0-alpha/2., dof) 
+        # sigma = res.hess_inv[0][0] ** 0.5
+        # fac = sigma*tval 
+        # print(fac, tval)
+
+
+        # y0 = y[-1]
+        # dy0, ddy0 = expfit(x, np.log(y), W = -1)
+        # x = np.arange(predDays+1)
+        # sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
+        # yy = [*yy, *[a[2] for a in sol][1:]]
+        R0hist.append(R0[0])
+        pred.append(yy)
+
+        # if i==days - window:
+        #     xb = np.arange(window)
+
+        #     coef = np.polyfit(range(3), R0hist[-3:], 1)
+            
+        #     solb = odeint(ode, sol[1], xb, args=(R0+coef[0],))
+        #     pred[-1][window] = solb[-1][2]
+
+    return R0hist, pred
+        
+        
+        
