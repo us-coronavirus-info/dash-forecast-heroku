@@ -9,8 +9,9 @@ import re
 
 # import figures as figs
 import lib.dash_reusable_components as drc
-import lib.forecast as forecast
-from lib.graph import generateGraph
+import lib.forecast2 as forecast
+from lib.graph2 import generateGraph
+import dash_daq as daq
 
 app = dash.Dash(
     __name__,
@@ -23,20 +24,21 @@ app = dash.Dash(
 server = app.server
 
 # data
-severeProv, provRes, otherData = forecast.getData()
-severeProvLabel = [{"label": a, "value": a} for a in severeProv]
+severeStates, stateRes, lastDay = forecast.updatedata()
+severeProvLabel = [{"label": a, "value": a} for a in severeStates]
+totDays = 16 # equal to window + dispDays - 1 + predDays for now
 
 # x axis
-lastDay = otherData['lastDay']
-totDays = otherData['totDays']
 lastDay = [int(c) for c in re.split('-|/',lastDay)]
-lastDay = DT.date(*lastDay)
-dates = [(lastDay - DT.timedelta(days = (totDays-i-1))).strftime(r'%m/%d').lstrip("0")  for i in range(totDays + 5)]
+
+lastDay = DT.date(2020, *lastDay) # Hardcoded Year
+dates = [(lastDay - DT.timedelta(days = (totDays-i-4))).strftime(r'%m/%d').lstrip("0")  for i in range(totDays)]
 
 # Default 
-valDays = 1
 predDays = 3
-prediction_figure = generateGraph(severeProv[0], dates, provRes[severeProv[0]],totDays,valDays,predDays)
+valDays = 0
+dispDays = 7
+prediction_figure = generateGraph(severeStates[0], dates, stateRes[severeStates[0]], totDays, valDays)
 
 # HTML
 app.layout = html.Div(
@@ -54,7 +56,7 @@ app.layout = html.Div(
                             id="banner-title",
                             children=[
                                 html.A(
-                                    "确诊预测模型",
+                                    "US Confimred Case Forecast",
                                     style={
                                         "text-decoration": "none",
                                         "color": "inherit",
@@ -91,7 +93,7 @@ app.layout = html.Div(
                                     id="first-card",
                                     children=[
                                         drc.NamedDropdown(
-                                            name="超过100例确诊",
+                                            name="States over 500 Cases",
                                             id="dropdown-select-dataset",
                                             options = severeProvLabel,
                                             clearable=False,
@@ -99,30 +101,31 @@ app.layout = html.Div(
                                             value=severeProvLabel[0]['label' ],
                                         ),
                                         drc.NamedSlider(
-                                            name="模型截至日期",
+                                            name="Date to Start Forecasting",
                                             id="slider-training-date",
-                                            min=-4,
+                                            min=-dispDays+1,
                                             max=0,
                                             marks={
-                                                i: dates[i-6] 
-                                                for i in range(-4,1)
+                                                i: dates[i-4] 
+                                                for i in range(-dispDays+1,1)
                                             },
                                             value=-valDays,
                                         ),
-                                         drc.NamedSlider(
-                                            name="模型预测天数",
-                                            id="slider-forecasting-days",
-                                            min=1,
-                                            max=5,
-                                            marks={
-                                                str(i): str(i)
-                                                for i in range(1,6)
-                                            },
-                                            step=1,
-                                            value=predDays,
-                                        ),
                                     ],
                                 ),
+                                drc.Card(
+                                    id="second-card",
+                                    children=[
+                                        html.P("Estimated Increase Today"),
+                                        daq.LEDDisplay(
+                                            id="forecast-number",
+                                            value=int(stateRes[severeStates[0]]['forecast']),
+                                            color="#92e0d3",
+                                            backgroundColor="#1e2130",
+                                            size=30,
+                                        ),
+                                    ],
+                                )
                             ],
                         ),
                         html.Div(
@@ -152,12 +155,21 @@ app.layout = html.Div(
     [
         Input("dropdown-select-dataset", "value"),
         Input("slider-training-date", "value"),
-        Input("slider-forecasting-days", "value"),
     ],
 )
-def updateGraph(name, valDays, predDays):
-    prediction_figure = generateGraph(name, dates, provRes[name],totDays,abs(valDays),predDays)
+def updateGraph(name, valDays):
+    prediction_figure = generateGraph(name, dates, stateRes[name],totDays,abs(valDays))
+
     return dcc.Graph(id="graph-prediction", figure=prediction_figure)
+
+@app.callback(
+    Output("forecast-number", "value"),
+    [
+        Input("dropdown-select-dataset", "value"),
+    ],
+)
+def updateForecaset(name):
+    return int(stateRes[name]['forecast']),
 
 
 # Running the server
