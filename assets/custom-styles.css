@@ -350,7 +350,7 @@ display: none !important;
 
 @media (max-width: 1300px) {
     #div-graphs {
-        //height: 55rem;
+        height: calc(100vh - 30rem);
     }
 
     .gtitle {

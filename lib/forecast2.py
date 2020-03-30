@@ -75,8 +75,8 @@ def updatedata():
             }
 
         cnt += 1
-        # if cnt == 10:
-        #     break
+        if cnt == 2:
+            break
     
     with open(r'assets/ErrorMap.json', 'w') as f:
         json.dump(errorMap, f)
