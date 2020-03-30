@@ -93,7 +93,7 @@ def fitModel(hist):
             
             return sse   
 
-        # Fixed R0
+# Fixed R0
         res = minimize(SEIR_modelode, 2, method='BFGS', #'nelder-mead',
                        tol= 1e-8, options={'disp': False})
         [R0] = res.x
@@ -105,7 +105,7 @@ def fitModel(hist):
         yy = [a[2] for a in sol]
         yy[window:] += y[-1] - yy[window-1]
 
-        # # R0 as a Linear function
+# R0 as a Linear function
         # res = minimize(SEIR_modelodefR, [3,0], method='BFGS', #'nelder-mead',
         #                tol= 1e-8, options={'disp': False})
         # R0, k = res.x
@@ -116,7 +116,7 @@ def fitModel(hist):
         # yy[window:] += y[-1] - yy[window-1]
         
 
-
+# Confidence Interval
         # alpha = 0.05 # 95% confidence interval = 100*(1-alpha)
         # dof = window- 1 # number of degrees of freedom
         # # student-t value for the dof and confidence level
@@ -125,20 +125,22 @@ def fitModel(hist):
         # fac = sigma*tval 
         # print(fac, tval)
 
-
+# Pred from last point
+        # x = np.arange(window)
         # y0 = y[-1]
         # dy0, ddy0 = expfit(x, np.log(y), W = -1)
         # x = np.arange(predDays+1)
         # sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
-        # yy = [*yy, *[a[2] for a in sol][1:]]
+        # yy[-predDays] = sol[-predDays][2]
+
+
         R0hist.append(R0)
         pred.append(yy)
 
+#  Vary R0 by percentage
         # if i==days - window:
         #     xb = np.arange(window)
-
         #     coef = np.polyfit(range(3), R0hist[-3:], 1)
-            
         #     solb = odeint(ode, sol[1], xb, args=(R0+coef[0],))
         #     pred[-1][window] = solb[-1][2]
 

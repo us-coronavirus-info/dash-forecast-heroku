@@ -141,10 +141,10 @@ def generateGraph(name, dates, data, totDays, valDays=0):
             # categoryorder="array",
             # categoryarray = dates,
         ),
-        yaxis=dict(ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True, title="Confirmed Cases"),
+        yaxis=dict(ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True, ), #title="Confirmed Cases"
         yaxis2=dict(
             ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True,
-            title="R0",
+            # title="R0",
             overlaying="y",
             side="right",
             range=[0,10],
