@@ -97,7 +97,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x=xfit,
         y=yfit,
         mode="lines",
-        name="Forecasting",
+        name="Fitting",
         line = dict(dash='dash',color='Violet'),
     ) 
     
@@ -105,7 +105,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         x=xpred,
         y=ypred,
         mode="lines",
-        name="Prediction",
+        name="Forecasting",
         line = dict(dash='dash',color='DeepSkyBlue'),
     ) 
     
