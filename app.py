@@ -67,6 +67,8 @@ valDays = 0
 dispDays = 7
 prediction_figure = generateGraph(severeStates[0], dates, stateRes[severeStates[0]], totDays, valDays)
 
+app.title = 'U.S. Confirmed Case Forecast by Coronavirus News Aggregator'
+
 # HTML
 app.layout = html.Div(
     children=[
@@ -83,21 +85,21 @@ app.layout = html.Div(
                             id="banner-title",
                             children=[
                                 html.A(
-                                    "US Confimred Case Forecast",
+                                    "U.S. Confimred Case Forecast",
                                     style={
                                         "text-decoration": "none",
                                         "color": "inherit",
                                     },
                                 ),
-                                # html.A(
-                                #     "by QMSHAO",
-                                #     style={
-                                #         "text-decoration": "none",
-                                #         "color": "inherit",
-                                #         "padding": "10px",
-                                #         "font-size": "50%",
-                                #     },
-                                # )
+                                html.A(
+                                    "by Coronavirus News Aggregator", href="https://us-coronavirus.info/",
+                                    style={
+                                        "text-decoration": "none",
+                                        "color": "inherit",
+                                        "padding": "10px",
+                                        "font-size": "50%",
+                                    },
+                                )
                             ],
                         ),
                     ],
