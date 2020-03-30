@@ -32,6 +32,9 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     xpred = dates[totDays-valDays-predDays-1:totDays-valDays]
     ypred = [yhist[-valDays-1], *data['pred'][dispDays - valDays - 1][window:]]
     
+    ylb = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['lb']]
+    yub = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['ub']]
+
     xR0 = dates[-window-predDays:-predDays]
     yR0 = data['R0hist']
     
@@ -73,15 +76,15 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     # )    
    
                 
-    # # Polinimal Lower Bound
-    # tracepred0 = go.Scatter(
-    #     x=xpredb,
-    #     y=ypred0,
-    #     mode="lines",
-    #     name="多项式预测下限区间",
-    #     line = dict(dash='dash',color='GoldenRod'),
-    #     showlegend=False
-    # )     
+    # # Lower Bound
+    tracelb = go.Scatter(
+        x=xpred,
+        y=ylb,
+        mode="lines",
+        name="10% R0 Reduction",
+        line = dict(dash='dash',color='GoldenRod'),
+        # showlegend=False
+    )     
     
     # tracepred0shade = go.Scatter(
     #     x=xpredb,
@@ -101,11 +104,33 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         line = dict(dash='dash',color='Violet'),
     ) 
     
+    # Lower Bound
+    tracelb = go.Scatter(
+        x=xpred,
+        y=ylb,
+        mode="lines",
+        name="10% R0 Reduction",
+        line = dict(dash='dash',color='DeepSkyBlue'),
+        showlegend=False
+    )    
+
+    # Upper Bound
+    traceub = go.Scatter(
+        x=xpred,
+        y=yub,
+        mode="lines",
+        name="5% R0 Increase",
+        fill='tonexty',
+        line = dict(dash='dash',color='DeepSkyBlue'), #GoldenRod
+        showlegend=False
+    )    
+
     tracepred = go.Scatter(
         x=xpred,
         y=ypred,
         mode="lines",
         name="Forecasting",
+        # fill='tonexty',
         line = dict(dash='dash',color='DeepSkyBlue'),
     ) 
     
@@ -161,7 +186,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
 
 
 
-    data = [tracehist,tracefit, tracepred, traceR0, tracedivider, traceErr]
+    data = [tracehist,tracefit, tracelb, traceub, tracepred, traceR0, tracedivider, traceErr]
     figure = go.Figure(data=data, layout=layout)
 
     return figure

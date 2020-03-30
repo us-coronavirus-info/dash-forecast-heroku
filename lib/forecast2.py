@@ -56,7 +56,7 @@ def updatedata():
             continue
         print('Modeling ' + state)
         servereStates.append(state)
-        R0hist, pred = fitModel(hist)
+        R0hist, pred, bounds = fitModel(hist)
 
         stateErr =  []
         for i in range(dispDays-1):
@@ -70,8 +70,14 @@ def updatedata():
             'R0hist': R0hist, 
             'pred': pred, 
             'hist': hist[-window-dispDays+1:], 
-            'forecast': pred[-1][-predDays]-pred[-1][-predDays-1],
+            # 'forecast': pred[-1][-predDays]-pred[-1][-predDays-1],
+            'forecast': [
+                    bounds[-1]['lb'][-predDays] - hist[-1], 
+                    bounds[-1]['ub'][-predDays] - hist[-1],
+                    pred[-1][-predDays] - hist[-1], 
+                ],
             'err':stateErr,
+            'bounds': bounds,
             }
 
         cnt += 1

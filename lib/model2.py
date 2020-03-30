@@ -50,6 +50,7 @@ def fitModel(hist):
    
     R0hist = []
     pred = []
+    bounds = []
 
     # fit data within window size
     for i in range(days - window + 1): 
@@ -126,7 +127,6 @@ def fitModel(hist):
         # print(fac, tval)
 
 # Pred from last point
-        # x = np.arange(window)
         # y0 = y[-1]
         # dy0, ddy0 = expfit(x, np.log(y), W = -1)
         # x = np.arange(predDays+1)
@@ -137,14 +137,23 @@ def fitModel(hist):
         R0hist.append(R0)
         pred.append(yy)
 
-#  Vary R0 by percentage
+#  Vary R0 by trend
         # if i==days - window:
         #     xb = np.arange(window)
         #     coef = np.polyfit(range(3), R0hist[-3:], 1)
         #     solb = odeint(ode, sol[1], xb, args=(R0+coef[0],))
         #     pred[-1][window] = solb[-1][2]
 
-    return R0hist, pred
+#  Vary R0 by bound
+        xb = np.arange(window + predDays-1)
+        lb = odeint(ode, sol[1], xb, args=(R0*0.9,))
+        ub = odeint(ode, sol[1], xb, args=(R0*1.05,))
+        bounds.append({
+            "ub":[a[2] for a in ub[-predDays:]],
+            "lb":[a[2] for a in lb[-predDays:]]
+            })
+
+    return R0hist, pred, bounds
         
         
         

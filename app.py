@@ -130,13 +130,30 @@ app.layout = html.Div(
                                         html.P("Forecast Today"),
                                         html.Div(
                                             id = 'LEDcontainer',
-                                            children = daq.LEDDisplay(
-                                                id="forecast-number",
-                                                value=int(stateRes[severeStates[0]]['forecast']),
-                                                color="#92e0d3",
-                                                backgroundColor="#1e2130",
-                                                size=25,
-                                            ),
+                                            style = {"display":"flex"},
+                                            children = [
+                                                    daq.LEDDisplay(
+                                                    id="forecast-lb",
+                                                    value=int(stateRes[severeStates[0]]['forecast'][0]),
+                                                    color="#92e0d3",
+                                                    backgroundColor="#1e2130",
+                                                    size=12,
+                                                ),
+                                                html.Div(
+                                                    style={"padding":5, "color": "#92e0d3"},
+                                                    children = [
+                                                        html.P(''),
+                                                        html.P('to'),
+                                                    ]
+                                                ),
+                                                daq.LEDDisplay(
+                                                    id="forecast-ub",
+                                                    value=int(stateRes[severeStates[0]]['forecast'][2]),
+                                                    color="#92e0d3",
+                                                    backgroundColor="#1e2130",
+                                                    size=12,
+                                                ),
+                                            ]
                                         ),
                                         drc.NamedSlider(
                                             name="Date to Start Forecasting",
@@ -197,14 +214,24 @@ def updateGraph(name, valDays):
     return dcc.Graph(id="graph-prediction", figure=prediction_figure)
 
 @app.callback(
-    Output("forecast-number", "value"),
+    Output("forecast-lb", "value"),
     [
         Input("dropdown-select-dataset", "value"),
     ],
 )
-def updateForecaset(name):
-    return int(stateRes[name]['forecast']),
+def updateForecasetLb(name):
+    return int(stateRes[name]['forecast'][0]),
 
+
+ubfilterlist = ['New York', 'United States']
+@app.callback(
+    Output("forecast-ub", "value"),
+    [
+        Input("dropdown-select-dataset", "value"),
+    ],
+)
+def updateForecasetUb(name):
+    return int(stateRes[name]['forecast'][2 if name in ubfilterlist else 1]),
 
 # Running the server
 if __name__ == "__main__":
