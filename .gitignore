@@ -6,4 +6,4 @@ venv
 .DS_Store
 .env
 dash/
-errMap.json
+ErrMap.json
