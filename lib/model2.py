@@ -73,23 +73,50 @@ def fitModel(hist):
             sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
             sse = 0
             for i in range(len(x)):
-                sse += (y[i]-sol[i][2])**2
+                sse += ((y[i]-sol[i][2])*(i+1)**0)**2
             return sse       
-    
+
+        def odefR(yy, t, R0, k):
+            E,I,C = yy
+    #        R = R0*(1 + a*np.exp(-b*t))
+            R = R0 + k*t
+            
+            return [R/DI*I-E/DE, E/DE-I/DI, E/DE]
+        
+        def SEIR_modelodefR(para):
+            
+            R0, k = para
+            sol = odeint(odefR, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,k))
+            sse = 0
+            for i in range(len(x)):
+                sse += ((y[i]-sol[i][2])*(i+1)**0.5)**2
+            
+            return sse   
+
+        # Fixed R0
         res = minimize(SEIR_modelode, 2, method='BFGS', #'nelder-mead',
                        tol= 1e-8, options={'disp': False})
-        R0 = res.x
-        if R0[0] < 0:
-            R0 = np.array([0])
-
+        [R0] = res.x
+        if R0 < 0:
+            R0 = 0
         # Model Validation
         x = np.arange(window + predDays)
         sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
         yy = [a[2] for a in sol]
         yy[window:] += y[-1] - yy[window-1]
 
-
+        # # R0 as a Linear function
+        # res = minimize(SEIR_modelodefR, [3,0], method='BFGS', #'nelder-mead',
+        #                tol= 1e-8, options={'disp': False})
+        # R0, k = res.x
+        # # Model Validation
+        # x = np.arange(window + predDays)
+        # sol = odeint(odefR, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,k))
+        # yy = [a[2] for a in sol]
+        # yy[window:] += y[-1] - yy[window-1]
         
+
+
         # alpha = 0.05 # 95% confidence interval = 100*(1-alpha)
         # dof = window- 1 # number of degrees of freedom
         # # student-t value for the dof and confidence level
@@ -104,7 +131,7 @@ def fitModel(hist):
         # x = np.arange(predDays+1)
         # sol = odeint(ode, [dy0*DE, (ddy0*DE+dy0)/R0*DI ,y0], x, args=(R0,))
         # yy = [*yy, *[a[2] for a in sol][1:]]
-        R0hist.append(R0[0])
+        R0hist.append(R0)
         pred.append(yy)
 
         # if i==days - window:
