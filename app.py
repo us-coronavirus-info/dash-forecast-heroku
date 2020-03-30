@@ -130,7 +130,7 @@ app.layout = html.Div(
                                         html.P("Forecast Today"),
                                         html.Div(
                                             id = 'LEDcontainer',
-                                            style = {"display":"flex"},
+                                            style = {"display":"flex", "justify-content":"center"},
                                             children = [
                                                     daq.LEDDisplay(
                                                     id="forecast-lb",
@@ -198,9 +198,9 @@ app.layout = html.Div(
                 )
             ],
         ),
-        html.Footer(
-            'Copyright © 2020 qmshaophoto'
-        )
+        # html.Footer(
+        #     'Copyright © 2020 qmshaophoto'
+        # )
     ]
 )
 
