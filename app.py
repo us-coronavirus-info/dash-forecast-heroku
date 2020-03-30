@@ -226,7 +226,6 @@ def updateForecasetLb(name):
     return int(stateRes[name]['forecast'][0]),
 
 
-ubfilterlist = ['New York', 'United States']
 @app.callback(
     Output("forecast-ub", "value"),
     [
@@ -234,7 +233,7 @@ ubfilterlist = ['New York', 'United States']
     ],
 )
 def updateForecasetUb(name):
-    return int(stateRes[name]['forecast'][2 if name in ubfilterlist else 1]),
+    return int(stateRes[name]['forecast'][2]),
 
 # Running the server
 if __name__ == "__main__":
