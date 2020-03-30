@@ -198,6 +198,9 @@ app.layout = html.Div(
                 )
             ],
         ),
+        html.Footer(
+            'Copyright © 2020 qmshaophoto'
+        )
     ]
 )
 
