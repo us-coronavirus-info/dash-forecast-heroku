@@ -233,7 +233,7 @@ def updateForecasetLb(name):
     ],
 )
 def updateForecasetUb(name):
-    return int(stateRes[name]['forecast'][2]),
+    return int(stateRes[name]['forecast'][1]),
 
 # Running the server
 if __name__ == "__main__":
