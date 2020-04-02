@@ -23,15 +23,6 @@ app = dash.Dash(
 app.index_string = """<!DOCTYPE html>
 <html>
     <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106805084-1"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', 'UA-106805084-1');
-        </script>
 
         {%metas%}
         <title>{%title%}</title>
@@ -122,7 +113,7 @@ app.layout = html.Div(
                                     id="first-card",
                                     children=[
                                         drc.NamedDropdown(
-                                            name="States over 1000 Cases",
+                                            name="States over 2000 Cases",
                                             id="dropdown-select-dataset",
                                             options = severeProvLabel,
                                             clearable=False,
