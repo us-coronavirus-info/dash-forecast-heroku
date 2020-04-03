@@ -82,15 +82,15 @@ app.layout = html.Div(
                                         "color": "inherit",
                                     },
                                 ),
-                                html.A(
-                                    "by Coronavirus News Aggregator", href="https://us-coronavirus.info/",
-                                    style={
-                                        "text-decoration": "none",
-                                        "color": "inherit",
-                                        "padding": "10px",
-                                        "font-size": "50%",
-                                    },
-                                )
+#                                html.A(
+#                                    "by Coronavirus News Aggregator", href="https://us-coronavirus.info/",
+#                                    style={
+#                                        "text-decoration": "none",
+#                                        "color": "inherit",
+#                                        "padding": "10px",
+#                                        "font-size": "50%",
+#                                    },
+#                                )
                             ],
                         ),
                     ],
