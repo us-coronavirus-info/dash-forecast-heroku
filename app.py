@@ -42,7 +42,7 @@ app.index_string = """<!DOCTYPE html>
 server = app.server
 
 # data
-severeStates, stateRes, lastDay = forecast.updatedata()
+severeStates, stateRes, lastDay, thres = forecast.updatedata()
 severeProvLabel = [{"label": a, "value": a} for a in severeStates]
 totDays = 16 # equal to window + dispDays - 1 + predDays for now
 
@@ -113,7 +113,7 @@ app.layout = html.Div(
                                     id="first-card",
                                     children=[
                                         drc.NamedDropdown(
-                                            name="States over 2000 Cases",
+                                            name="States over " + str(thres) + " Cases",
                                             id="dropdown-select-dataset",
                                             options = severeProvLabel,
                                             clearable=False,
