@@ -86,13 +86,13 @@ def updatedata():
     
     with open(r'assets/ErrorMap.json', 'w') as f:
         json.dump(errorMap, f)
-    return (servereStates, stateRes, lastDay)
+    return (servereStates, stateRes, lastDay, thres)
 
 
 
 
 # Return provinces over thre cases
 def getData():
-    return (servereStates, stateRes, lastDay)
+    return (servereStates, stateRes, lastDay, thres)
 
 

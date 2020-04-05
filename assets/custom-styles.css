@@ -380,7 +380,9 @@ display: none !important;
         padding-bottom: 4rem;
         border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     }
-
+    .banner {
+        display: none;
+    }
     #svm-graph-container .graph-wrapper {
         width: 90%;
         height: 90%;
