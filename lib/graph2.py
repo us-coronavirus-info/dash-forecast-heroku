@@ -33,7 +33,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     ypred = [yhist[-valDays-1], *data['pred'][dispDays - valDays - 1][window:]]
     
     ylb = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['lb']]
-    # yub = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['ub']]
+    yub = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['ub']]
 
     xR0 = dates[-window-predDays:-predDays]
     yR0 = data['R0hist']
@@ -102,20 +102,20 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="lines",
         name="Social Distancing Impact",
         line = dict(dash='dash',color='GoldenRod'),
-        fill='tonexty',
+        # fill='tonexty',
         # showlegend=False
     )    
 
-    # # Upper Bound
-    # traceub = go.Scatter(
-    #     x=xpred,
-    #     y=yub,
-    #     mode="lines",
-    #     name="5% R0 Increase",
-    #     fill='tonexty',
-    #     line = dict(dash='dash',color='DeepSkyBlue'), #GoldenRod
-    #     showlegend=False
-    # )    
+    # Upper Bound
+    traceub = go.Scatter(
+        x=xpred,
+        y=yub,
+        mode="lines",
+        name="5% R0 Increase",
+        fill='tonexty',
+        line = dict(dash='dash',color='DeepSkyBlue'), #GoldenRod
+        showlegend=False
+    )    
 
     tracepred = go.Scatter(
         x=xpred,
@@ -178,7 +178,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
 
 
 
-    data = [tracehist,tracefit, tracepred, tracelb, traceR0, tracedivider, traceErr]
+    data = [tracehist,tracefit, tracepred, tracelb, traceub, traceR0, tracedivider, traceErr]
     figure = go.Figure(data=data, layout=layout)
 
     return figure
