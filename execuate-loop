@@ -1,0 +1,13 @@
+#!/bin/bash
+
+while true;
+do
+    DATE=`date | cut -d' ' -f4`
+    if [[ $DATE == "06:30:00" ]]
+    then
+            echo $DATE >> xyz.log
+            echo "to restart heroku" >> xyz.log
+            heroku restart
+            sleep 1s
+    fi
+done
