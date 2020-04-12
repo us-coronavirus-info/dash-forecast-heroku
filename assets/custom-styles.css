@@ -25,14 +25,14 @@ display: none !important;
 /* Banner
 �������������������������������������������������� */
 .banner {
-    background-color: #2f3445; /* Machine Learning Color is orange */
+    background-color: #ef5350; /* Machine Learning Color is orange */
     padding: 3rem 0;
     width: 100%;
     margin-bottom: 5rem;
 }
 
 .banner h2 {
-    color: #a5b1cd;
+    color: #FFFFFF;
     display: inline-block;
     font-family: 'Playfair Display', sans-serif;
     font-size: 4rem;
@@ -41,7 +41,7 @@ display: none !important;
 }
 
 .banner h2:hover {
-    color: #b4b5bf;
+    color: #FFFFFF;
     cursor: pointer;
 }
 
@@ -121,7 +121,7 @@ display: none !important;
 
 /* Dropdowns
 �������������������������������������������������� */
-.Select-control {
+/* .Select-control {
     color: #a5b1cd;
 }
 
@@ -149,7 +149,7 @@ display: none !important;
 .Select--single > .Select-control .Select-value, .Select-placeholder {
     border: 1px solid gray;
     border-radius: 4px;
-}
+} */
 
 .card {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -269,13 +269,25 @@ display: none !important;
 
 /* Slider
 �������������������������������������������������� */
-
 .rc-slider-track {
+    background-color: #444444;
+}
+
+.rc-slider-handle, .rc-slider-dot {
+    border: solid 2px #444444;
+}
+
+.rc-slider-handle:hover, .rc-slider-handle:active, .rc-slider-handle:focus {
+    color: #444444 !important;
+    border-color: #444444 !important;
+}
+
+/* .rc-slider-track {
     background-color: #13c6e9;
 }
 
 .rc-slider-handle {
-    border: solid 2px #13c6e9;
+    border: solid 2px #13c6e9; */
 }
 
 /* Left column

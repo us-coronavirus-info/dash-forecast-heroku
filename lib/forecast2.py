@@ -13,7 +13,7 @@ from .model2 import fitModel
 
 
 
-thres = 2000
+thres = 500000
 window = 7 # also defined in model
 dispDays = 7
 predDays = 3

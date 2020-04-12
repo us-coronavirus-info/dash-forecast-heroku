@@ -128,12 +128,11 @@ app.layout = html.Div(
                                                     daq.LEDDisplay(
                                                     id="forecast-lb",
                                                     value=int(stateRes[severeStates[0]]['forecast'][0]),
-                                                    color="#92e0d3",
-                                                    backgroundColor="#1e2130",
+                                                    color="#FF5E5E",
                                                     size=12,
                                                 ),
                                                 html.Div(
-                                                    style={"padding":5, "color": "#92e0d3"},
+                                                    style={"padding":5, "color": "#1e2130"},
                                                     children = [
                                                         html.P(''),
                                                         html.P('to'),
@@ -142,8 +141,7 @@ app.layout = html.Div(
                                                 daq.LEDDisplay(
                                                     id="forecast-ub",
                                                     value=int(stateRes[severeStates[0]]['forecast'][2]),
-                                                    color="#92e0d3",
-                                                    backgroundColor="#1e2130",
+                                                    color="#FF5E5E",
                                                     size=12,
                                                 ),
                                             ]

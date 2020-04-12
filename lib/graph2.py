@@ -44,6 +44,9 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     baseErr = data['hist'][-window+1:]
     colorErr = list(map(lambda e: 'crimson' if e>0 else px.colors.qualitative.Dark2[0], yErr))
 
+    range0 = yhist[0] * 0.9
+    range1 = max(yhist[-1],ypred[-1],ylb[-1],yub[-1]) * 1.05
+
     # Plot 
     # sizefactor = 1 if name in ['湖北省','全国','湖北'] else 1
     sizefactor = 3
@@ -53,7 +56,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="markers",
         name="Confirmed Cases",
         line=None,
-        marker=dict(size=5, color=px.colors.qualitative.Set1[5], #'#E55A4D', np.log10(yhist+1)*sizefactor
+        marker=dict(size=5, color=px.colors.qualitative.Set1[1], #'#E55A4D', np.log10(yhist+1)*sizefactor
                 line=dict(
                     color='#000',
                     width=0
@@ -131,7 +134,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         y = yR0,
         mode="lines",
         name="R0 Trend",
-        line = dict(color='White', shape='spline',smoothing= 1),
+        line = dict(color='black', shape='spline',smoothing= 1),
         yaxis="y2"
     )
 
@@ -158,7 +161,9 @@ def generateGraph(name, dates, data, totDays, valDays=0):
             # categoryorder="array",
             # categoryarray = dates,
         ),
-        yaxis=dict(ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True, ), #title="Confirmed Cases"
+        yaxis=dict(ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True, 
+            range = [range0, range1 ],
+        ), #title="Confirmed Cases"
         yaxis2=dict(
             ticks="inside", showticklabels=False, showgrid=False, zeroline=False, fixedrange=True,
             # title="R0",
@@ -171,9 +176,12 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         hovermode="closest",
         legend=dict(x=0.05, y=0.95, orientation="v"),
         margin=dict(l=0, r=0, t=0, b=0),
-        plot_bgcolor="#282b38",
-        paper_bgcolor="#282b38",
-        font={"color": "#a5b1cd"},
+        # # plot_bgcolor="#282b38",
+        # plot_bgcolor="#434658",
+        # paper_bgcolor="#434658",
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        font={"color": "#444444"},
     )
 
 
