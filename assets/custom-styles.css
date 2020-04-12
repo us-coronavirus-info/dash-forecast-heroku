@@ -32,7 +32,7 @@ display: none !important;
 }
 
 .banner h2 {
-    color: #a5b1cd;
+    color: #FFFFFF;
     display: inline-block;
     font-family: 'Playfair Display', sans-serif;
     font-size: 4rem;
@@ -41,7 +41,7 @@ display: none !important;
 }
 
 .banner h2:hover {
-    color: #b4b5bf;
+    color: #FFFFFF;
     cursor: pointer;
 }
 
