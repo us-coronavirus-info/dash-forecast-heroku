@@ -270,11 +270,16 @@ display: none !important;
 /* Slider
 �������������������������������������������������� */
 .rc-slider-track {
-    background-color: #1e2130;
+    background-color: #444444;
 }
 
 .rc-slider-handle, .rc-slider-dot {
-    border: solid 2px #1e2130;
+    border: solid 2px #444444;
+}
+
+.rc-slider-handle:hover, .rc-slider-handle:active, .rc-slider-handle:focus {
+    color: #444444 !important;
+    border-color: #444444 !important;
 }
 
 /* .rc-slider-track {
