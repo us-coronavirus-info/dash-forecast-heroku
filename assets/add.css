@@ -20,3 +20,11 @@ footer {
     font-size:xx-small; 
     color:lightslategray
 }
+
+#first-card p {
+    font-weight: bold;
+}
+
+/* .daq-leddisplay--light__digit path {
+    fill: #1e2130;
+} */

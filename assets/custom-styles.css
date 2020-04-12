@@ -121,7 +121,7 @@ display: none !important;
 
 /* Dropdowns
 �������������������������������������������������� */
-.Select-control {
+/* .Select-control {
     color: #a5b1cd;
 }
 
@@ -149,7 +149,7 @@ display: none !important;
 .Select--single > .Select-control .Select-value, .Select-placeholder {
     border: 1px solid gray;
     border-radius: 4px;
-}
+} */
 
 .card {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -269,13 +269,20 @@ display: none !important;
 
 /* Slider
 �������������������������������������������������� */
-
 .rc-slider-track {
+    background-color: #1e2130;
+}
+
+.rc-slider-handle, .rc-slider-dot {
+    border: solid 2px #1e2130;
+}
+
+/* .rc-slider-track {
     background-color: #13c6e9;
 }
 
 .rc-slider-handle {
-    border: solid 2px #13c6e9;
+    border: solid 2px #13c6e9; */
 }
 
 /* Left column
