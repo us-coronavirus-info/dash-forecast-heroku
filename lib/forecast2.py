@@ -13,9 +13,9 @@ from .model2 import fitModel
 
 
 
-thres = 3000
+thres = 5000
 window = 7 # also defined in model
-dispDays = 7
+dispDays = 15
 predDays = 3
 lastDay = None
 servereStates = []
@@ -59,9 +59,9 @@ def updatedata():
         R0hist, pred, bounds = fitModel(hist)
 
         stateErr =  []
-        for i in range(dispDays-1):
-            predIncr = pred[i][window] - hist[-7+i]
-            realIncr = hist[-6+i] - hist[-7+i]
+        for i in range(1, dispDays):
+            predIncr = pred[i][window] - hist[-dispDays+i]
+            realIncr = hist[-dispDays+1+i] - hist[-dispDays+i]
             stateErr.append( (realIncr -predIncr) / predIncr)
         errorMap['data'].append(stateErr)
         errorMap['header'].append(state)

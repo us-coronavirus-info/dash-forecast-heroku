@@ -8,7 +8,7 @@ from scipy.stats.distributions import  t
 
 
 window = 7 
-dispDays = 7
+dispDays = 15
 predDays = 3
 
 def expfunc(x, a, b, c):
@@ -146,8 +146,8 @@ def fitModel(hist):
 
 #  Vary R0 by bound
         xb = np.arange(window + predDays-1)
-        lb = odeint(ode, sol[1], xb, args=(R0*0.9,))
-        ub = odeint(ode, sol[1], xb, args=(R0*1.05,))
+        lb = odeint(ode, sol[1], xb, args=(max(R0-max(R0*0.1,0.2), 0),))
+        ub = odeint(ode, sol[1], xb, args=(R0+(max(R0*0.05,0.1)),))
         bounds.append({
             "ub":[a[2] for a in ub[-predDays:]],
             "lb":[a[2] for a in lb[-predDays:]]
