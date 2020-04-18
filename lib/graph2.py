@@ -18,13 +18,13 @@ cscale = [
 ]
 window = 7
 predDays = 3
-dispDays = 7
+dispDays = 15
 
 def generateGraph(name, dates, data, totDays, valDays=0):
 
     # Prepare Data
     xhist = dates[:-predDays]
-    yhist = np.array(data['hist'])
+    yhist = np.array(data['hist'][-dispDays+2:])
 
     xfit = dates[totDays-window-valDays-predDays:totDays-valDays-predDays]
     yfit = data['pred'][dispDays - valDays - 1][:window]
@@ -35,13 +35,13 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     ylb = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['lb']]
     yub = [yhist[-valDays-1], *data['bounds'][dispDays - valDays - 1]['ub']]
 
-    xR0 = dates[-window-predDays:-predDays]
-    yR0 = data['R0hist']
+    xR0 = xhist #dates[-window-predDays:-predDays]
+    yR0 = data['R0hist'][-dispDays+2:]
     
-    xErr = dates[-predDays-window+1:-predDays]
+    xErr = xhist #dates[-predDays-window+1:-predDays]
     yErr = np.array(data['err']) * data['hist'][-1] / 1.5
     textErr = list(map(lambda e: '{0:+0.1f}%'.format(e*100), data['err']))
-    baseErr = data['hist'][-window+1:]
+    baseErr = data['hist'][-dispDays+2:] #[-window+1:]
     colorErr = list(map(lambda e: 'crimson' if e>0 else px.colors.qualitative.Dark2[0], yErr))
 
     range0 = yhist[0] * 0.9
@@ -61,6 +61,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
                     color='#000',
                     width=0
                 ),),
+        hovertemplate='%{x}: %{y:,}',
     )
 
     # tracevali = go.Scatter(
@@ -96,6 +97,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="lines",
         name="Fitting",
         line = dict(dash='dash',color='Violet'),
+        hovertemplate='%{x}: %{y:,}',
     ) 
     
     # Lower Bound
@@ -105,6 +107,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="lines",
         name="Social Distancing Impact",
         line = dict(dash='dash',color='GoldenRod'),
+        hovertemplate='%{x}: %{y:,}',
         # fill='tonexty',
         # showlegend=False
     )    
@@ -117,7 +120,8 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         name="5% R0 Increase",
         fill='tonexty',
         line = dict(dash='dash',color='DeepSkyBlue'), #GoldenRod
-        showlegend=False
+        showlegend=False,
+        hovertemplate='%{x}: %{y:,}',
     )    
 
     tracepred = go.Scatter(
@@ -127,6 +131,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         name="Forecasting",
         # fill='tonexty',
         line = dict(dash='dash',color='DeepSkyBlue'),
+        hovertemplate='%{x}: %{y:,}',
     ) 
     
     traceR0 = go.Scatter(
@@ -135,7 +140,8 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         mode="lines",
         name="R0 Trend",
         line = dict(color='black', shape='spline',smoothing= 1),
-        yaxis="y2"
+        yaxis="y2",
+        hovertemplate='%{x}: %{y:,}',
     )
 
     tracedivider = go.Scatter(
@@ -145,13 +151,15 @@ def generateGraph(name, dates, data, totDays, valDays=0):
         name="Divider",
         line = dict(dash='dash',color='grey'),
         yaxis="y2", 
-        showlegend=False
+        showlegend=False,
+        hovertemplate='%{x}: %{y:,}',
     ) 
 
     traceErr = go.Bar(x=xErr, y=yErr,
         base=baseErr,
         text=textErr,
         texttemplate='%{text}', textposition='outside',
+        hovertemplate='%{x}: %{text}',
         marker_color=colorErr,
         name=r'Daily % diff')
 
