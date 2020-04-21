@@ -33,13 +33,11 @@ def updatedata():
     response = json.loads(requests.get(url, verify=True ).text)
     for r in response:
         rec = r['records']
-        USsum = 0
         for item in rec:
             if not (item['name'] in ushist):
                 ushist[item['name']] = []
             ushist[item['name']].append(item['confirmedCount'])
-            USsum += int(item['confirmedCount'])
-        ushist['United States'].append(USsum)
+        ushist['United States'].append(r['confirmedCount'])
 
     for h in ushist:
         ushist[h].pop()
