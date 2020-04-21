@@ -39,7 +39,7 @@ def generateGraph(name, dates, data, totDays, valDays=0):
     yR0 = data['R0hist'][-dispDays+2:]
     
     xErr = xhist #dates[-predDays-window+1:-predDays]
-    yErr = np.array(data['err']) * data['hist'][-1] / 1.5
+    yErr = np.array(data['err']) * (data['hist'][-1] - data['hist'][0])  / 2
     textErr = list(map(lambda e: '{0:+0.1f}%'.format(e*100), data['err']))
     baseErr = data['hist'][-dispDays+2:] #[-window+1:]
     colorErr = list(map(lambda e: 'crimson' if e>0 else px.colors.qualitative.Dark2[0], yErr))
