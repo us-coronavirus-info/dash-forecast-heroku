@@ -44,7 +44,8 @@ def expfit(x, y, W = 1):
 
 def fitModel(hist):
 
-    hist0 = np.array(hist[-dispDays-window+1:])
+    
+    hist0 = np.array(hist)
     hist0 = np.log(hist0[hist0>0])
     days = len(hist0)
    
